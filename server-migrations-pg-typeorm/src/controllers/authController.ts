@@ -13,8 +13,7 @@ export const loginController = async (
     res.cookie("acces_token", token, {
       httpOnly: true, // La cookie solo se puede acceder en el servidor
       secure: process.env.NODE_ENV === "production", // La cookie solo se puede acceder en https
-      sameSite: "strict", // La cookie solo se puede acceder en el mismo dominio
-      maxAge: 1000 * 60 * 60, // La cookie tiene un tiempo de validacion de 1 hora
+      // sameSite: "strict", // La cookie solo se puede acceder en el mismo dominio
     });
 
     res.status(200).json({ message: "Has iniciado sesion!" });

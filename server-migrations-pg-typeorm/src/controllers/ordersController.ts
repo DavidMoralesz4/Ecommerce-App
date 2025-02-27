@@ -3,12 +3,14 @@ import { createOrderService, getOrderService } from "../services/ordersService";
 
 export const getOrdersController = async (req: Request, res: Response) => {
   try {
-    if(!req.userId){
+    const userId = req.userId
+
+    if(!userId){
       res.status(400).json({message: "Id del usuario es requerido, Por favor inicia sesion!"})
       return
     }
 
-    const orders = await getOrderService(req.userId);
+    const orders = await getOrderService(Number(userId));
 
     res.status(200).json(orders);
   } catch (error) {
@@ -24,13 +26,14 @@ export const createOrderController = async (req: Request, res: Response) => {
     if (!document || !order || !Array.isArray(order) || order.length === 0) {
       res.status(400).json({ error: "Cliente y productos son requeridos." });
     }
+    const userId = req.userId
 
-    if(!req.userId) {
+    if(!userId) {
       res.status(400).json({message: "Id del usuario es requerido, Por favor inicia sesion!"})
       return
     }
 
-    const newOrder = await createOrderService(document, order, req.userId);
+    const newOrder = await createOrderService(document, order, Number(userId));
 
     res.status(200).json(newOrder);
   } catch (error) {

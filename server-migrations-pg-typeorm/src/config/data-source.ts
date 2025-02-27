@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
   password: PASSWORD,
   database: "ecommerce_db",
   synchronize: true,
-  logging: true,
+  logging: false,
   entities: [User, Product, OrderProduct, Order, Client, Category],
   subscribers: [],
   migrations: [],

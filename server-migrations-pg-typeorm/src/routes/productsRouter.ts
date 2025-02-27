@@ -2,7 +2,7 @@ import { Router } from "express";
 import upload from "../middlewares/middleware";
 import {
   allProductsController,
-  getBrandController,
+  // getBrandController,
   getCategoryController,
   uploadProducts,
 } from "../controllers/productsController";
@@ -14,7 +14,7 @@ productRouter.get("/products", authenticateToken, allProductsController);
 
 productRouter.get("/products/:categoria", authenticateToken, getCategoryController);
 
-productRouter.get("/products/:categoria/:marca", authenticateToken, getBrandController);
+// productRouter.get("/products/:categoria/:marca", authenticateToken, getBrandController);
 
 productRouter.post(
   "/products/create/csv",

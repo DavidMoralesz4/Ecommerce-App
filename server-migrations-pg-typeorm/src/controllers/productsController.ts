@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import {
-  brandService,
+  // brandService,
   categoryService,
   createProductsFromCSV,
   getProdService,
@@ -43,9 +43,10 @@ export const uploadProducts = async (
     }
 
     const filePath = req.file?.path; // Ruta del archivo cargado
-
+    const userId = req.userId;
+    
     // Llamar al servicio para procesar el CSV
-    await createProductsFromCSV(filePath, req.userId);
+    await createProductsFromCSV(filePath, Number(userId));
 
     res
       .status(201)
@@ -63,15 +64,15 @@ export const getCategoryController = async (
   res: Response
 ): Promise<void> => {
   const { categoria } = req.params; // Categoría opcional desde la query
-
   try {
+    const userId = req.userId
     // Busca todos los productos con esa categoría
-    if (!req.userId) {
+    if (!userId) {
       res.status(400).json({ message: "ID de usuario no proporcionado" });
       return;
     }
 
-    const products = await categoryService(req.userId, categoria);
+    const products = await categoryService(Number(userId), categoria);
 
     if (products.length === 0) {
       res
@@ -88,33 +89,33 @@ export const getCategoryController = async (
   }
 };
 
-export const getBrandController = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { categoria } = req.params; // Categoría opcional desde la query
-  const { marca } = req.params; // Categoría opcional desde la query
+// export const getBrandController = async (
+//   req: Request,
+//   res: Response
+// ): Promise<void> => {
+//   const { categoria } = req.params; // Categoría opcional desde la query
+//   const { marca } = req.params; // Categoría opcional desde la query
 
-  try {
-    // Busca todos los productos con esa categoría
-    if (!req.userId) {
-      res.status(400).json({ message: "ID de usuario no proporcionado" });
-      return;
-    }
+//   try {
+//     // Busca todos los productos con esa categoría
+//     if (!req.userId) {
+//       res.status(400).json({ message: "ID de usuario no proporcionado" });
+//       return;
+//     }
 
-    const products = await brandService(req.userId, categoria, marca);
+//     const products = await brandService(req.userId, categoria, marca);
 
-    if (products.length === 0) {
-      res
-        .status(401)
-        .json({ message: "No se encontraron productos en esta categoría." });
-      return;
-    }
-    // Retorna los productos relacionados
-    res.status(200).json(products);
-  } catch (error) {
-    console.error("Error al obtener productos por categoría:", error);
-    res.status(500).json({ message: "Error interno del servidor." });
-    return;
-  }
-};
+//     if (products.length === 0) {
+//       res
+//         .status(401)
+//         .json({ message: "No se encontraron productos en esta categoría." });
+//       return;
+//     }
+//     // Retorna los productos relacionados
+//     res.status(200).json(products);
+//   } catch (error) {
+//     console.error("Error al obtener productos por categoría:", error);
+//     res.status(500).json({ message: "Error interno del servidor." });
+//     return;
+//   }
+// };

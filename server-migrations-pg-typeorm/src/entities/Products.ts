@@ -26,8 +26,8 @@ export class Product {
   @Column("decimal", { precision: 10, scale: 2 })
   price: number;
 
-  @Column()
-  unit: string;
+  @Column("int")
+  unit: number; // Asegúrate de que unit es un número y no string
 
   @ManyToOne(() => User, (user) => user.products, { onDelete: "CASCADE" })
   user: User;

@@ -1,4 +1,4 @@
-import { Client } from "../models/Clients";
+import { ClientModel } from "../config/data-source";
 
 export const createClientService = async (
   firstName: string,
@@ -8,14 +8,22 @@ export const createClientService = async (
   document: string,
   address: string
 ) => {
-  const client = await Client.create({
-    firstName,
-    lastName,
-    phone,
-    email,
-    document,
-    address,
-  });
+  try {
+    const client = ClientModel.create({
+      firstName,
+      lastName,
+      phone,
+      email,
+      document,
+      address,
+    });
 
-  return client;
+     await ClientModel.save(client)
+     
+     return client
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
 };

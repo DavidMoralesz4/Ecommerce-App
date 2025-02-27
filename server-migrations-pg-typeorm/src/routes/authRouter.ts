@@ -13,5 +13,4 @@ authRouter.post("/login", loginController);
 /// Solo yo puedo registrar los usuarios
 authRouter.post("/register", registerController);
 
-
 authRouter.post("/logout", logoutController);

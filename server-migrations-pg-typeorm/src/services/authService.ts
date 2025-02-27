@@ -8,7 +8,7 @@ export const registerService = async (username: string, email: string, password:
   // 1. Validar que no exista el email y el username
   // Validaciones de username, email y password (opcional: usar zod).
 
-  const validateEmail = await UserModel.find({ where: {email} });
+  const validateEmail = await UserModel.findOne({ where: {email} });
   const validateUsername = await UserModel.findOne({where: {username}});
 
   if (validateEmail) {
@@ -23,8 +23,7 @@ export const registerService = async (username: string, email: string, password:
   const hashPassword = await bcrypt.hash(password, 10);
 
   // 3. Crear el usuario en la DB
-
-  const userCreated = await UserModel.create({
+  const userCreated = UserModel.create({
     username,
     email,
     password: hashPassword,
@@ -33,14 +32,18 @@ export const registerService = async (username: string, email: string, password:
   // 4. guardamos el usuario creado en la DB
   await UserModel.save(userCreated);
 
-  return { user: userCreated };
+  return {
+    id: userCreated.id,
+    username: userCreated.username,
+    email: userCreated.email,
+  };
 };
 
-export const loginService = async ({ email, password, username }: IUser) => {
+export const loginService = async (email: string, password: string) => {
   // 1. Asegurar que el usuario esta registrado (Atravez del email)
-  const user = await User.findOne({ email });
+  const user = await UserModel.findOne({ where: {email} });
   const token = jwt.sign(
-    {  _id: user?._id, username: user?.username, password: user?.password, email: user?.email } , SECRET_KEY,
+    {  _id: user?.id, username: user?.username, email: user?.email } , SECRET_KEY,
     {
       expiresIn: "2h",
     }

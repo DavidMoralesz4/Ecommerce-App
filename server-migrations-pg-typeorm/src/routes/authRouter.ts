@@ -4,16 +4,13 @@ import {
   logoutController,
   registerController,
 } from "../controllers/authController";
-import { authenticateToken } from "../middlewares/authenticateToken";
-import { dashboardController } from "../controllers/productsController";
-
 
 export const authRouter: Router = Router();
 
-authRouter.get("/dashboard", authenticateToken, dashboardController);
 
 authRouter.post("/login", loginController);
 
+/// Solo yo puedo registrar los usuarios
 authRouter.post("/register", registerController);
 
 

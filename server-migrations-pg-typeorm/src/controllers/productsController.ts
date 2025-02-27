@@ -5,7 +5,6 @@ import {
   createProductsFromCSV,
   getProdService,
 } from "../services/productsService";
-import { User } from "../models/Users";
 
 export const allProductsController = async (
   req: Request,
@@ -117,24 +116,5 @@ export const getBrandController = async (
     console.error("Error al obtener productos por categoría:", error);
     res.status(500).json({ message: "Error interno del servidor." });
     return;
-  }
-};
-
-export const dashboardController = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const data = await User.findById(req.userId); // Accede a req.userId
-    // console.log(user);
-    if (!data) {
-      res.status(400).send("No existe ese usuario");
-      return;
-    }
-
-    res.status(200).json({ username: data.username, email: data.email });
-  } catch (error) {
-    console.error("Error en profileController:", error);
-    res.status(500).send("Error interno del servidor");
   }
 };

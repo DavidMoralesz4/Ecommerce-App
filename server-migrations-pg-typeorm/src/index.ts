@@ -1,5 +1,5 @@
-import { PORT } from "./config";
 import { AppDataSource } from "./config/data-source";
+import { PORT } from "./db/envs";
 import { server } from "./server";
 import "reflect-metadata";
 

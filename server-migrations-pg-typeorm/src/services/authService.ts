@@ -1,8 +1,8 @@
 // import { IUser, User } from "../models/Users";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { SECRET_KEY } from "../config";
 import { UserModel } from "../config/data-source";
+import { SECRET_KEY } from "../db/envs";
 
 export const registerService = async (username: string, email: string, password: string ) => {
   // 1. Validar que no exista el email y el username
@@ -42,6 +42,10 @@ export const registerService = async (username: string, email: string, password:
 export const loginService = async (email: string, password: string) => {
   // 1. Asegurar que el usuario esta registrado (Atravez del email)
   const user = await UserModel.findOne({ where: {email} });
+  if(!SECRET_KEY){
+    throw new Error('No hay una llave secreta - JWT')
+  }
+  
   const token = jwt.sign(
     {  _id: user?.id, username: user?.username, email: user?.email } , SECRET_KEY,
     {

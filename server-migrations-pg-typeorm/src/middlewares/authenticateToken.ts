@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { SECRET_KEY } from "../config";
+import { SECRET_KEY } from "../db/envs";
 
 interface IPayload {
   _id: string
@@ -20,6 +20,9 @@ export const authenticateToken = (
     return; // Detén la ejecución aquí
   }
 
+  if(!SECRET_KEY){
+    throw new Error('No hay una llave secreta - JWT')
+  }
   try {
     const payload = jwt.verify(token, SECRET_KEY)as IPayload;
     req.userId = payload._id

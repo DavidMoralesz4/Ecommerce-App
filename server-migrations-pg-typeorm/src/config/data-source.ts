@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { PASSWORD } from "../db/envs";
+import { DATABASE_URL } from "../db/envs";
 import { User } from "../entities/User";
 import { Product } from "../entities/Products";
 import { OrderProduct } from "../entities/OrderProduct";
@@ -9,11 +9,7 @@ import { Category } from "../entities/Category";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: PASSWORD,
-  database: "ecommerce_db",
+  url: DATABASE_URL,
   synchronize: true,
   logging: false,
   entities: [User, Product, OrderProduct, Order, Client, Category],
